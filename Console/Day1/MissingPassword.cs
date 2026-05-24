@@ -6,7 +6,7 @@ public class MissingPassword
 {
     public static int ChallengeOne()
     {
-        var counter = new CircularCounter(0, 99);
+        var counter = new CircularCounter(upperInclusive: 99, initial: 50);
 
         // TODO: read instructions and apply
 
@@ -25,7 +25,7 @@ public class CircularCounter
 
     public int Counter
     {
-        get => field;
+        get;
         private set
         {
             if (value < 0)
@@ -46,9 +46,16 @@ public class CircularCounter
     {
         var newCounter = Counter + n;
         while (newCounter > _upperInclusive)
+        {
+            newCounter--;
             newCounter -= _upperInclusive;
+        }
+
         while (newCounter < 0)
+        {
+            newCounter++;
             newCounter += _upperInclusive;
+        }
 
         Counter = newCounter;
     }
