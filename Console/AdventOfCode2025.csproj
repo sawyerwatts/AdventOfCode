@@ -9,4 +9,10 @@
     <AnalysisMode>Recommended</AnalysisMode>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="Day1\input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

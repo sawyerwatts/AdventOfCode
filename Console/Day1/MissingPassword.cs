@@ -1,62 +1,95 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
 
 namespace AdventOfCode2025.Day1;
 
 public class MissingPassword
 {
-    public static int ChallengeOne()
+    public int Challenge(Settings? settings = null)
     {
+        settings ??= new Settings();
+
         var counter = new CircularCounter(upperInclusive: 99, initial: 50);
+        var movements = ReadInputMovements(settings.InputPath);
 
-        // TODO: read instructions and apply
+        int zeros = 0;
 
-        // TODO: return the number of times the dial lands on 0
-
-        throw new NotImplementedException();
-    }
-}
-
-/// <summary>
-/// Circular counter from zero to a specified upper bound.
-/// </summary>
-public class CircularCounter
-{
-    private readonly int _upperInclusive;
-
-    public int Counter
-    {
-        get;
-        private set
+        // BUG: failing to reproduce old functionality w/ new code
+        foreach (int movement in movements)
         {
-            if (value < 0)
-                throw new ArgumentException($"Cannot set {nameof(CircularCounter.Counter)} to {value} because the counter should be zero or positive");
-            if (value > _upperInclusive)
-                throw new ArgumentException($"Cannot set {nameof(CircularCounter.Counter)} to {value} because it is higher than the upper bound (inclusive) of {_upperInclusive}");
-            field = value;
+            var increment = movement > 0 ? 1 : -1;
+            for (int i = 0; i < Math.Abs(movement); i++)
+            {
+                // TODO: didn't decrement on movement=-11
+                counter.Increment(increment);
+                if (counter.Counter == 0 && settings.Mode is Mode.CountZerosWheneverEncountered)
+                    zeros++;
+            }
+
+            if (counter.Counter == 0 && settings.Mode is Mode.CountZerosAfterMovement)
+                zeros++;
+        }
+
+        return zeros;
+    }
+
+    private IEnumerable<int> ReadInputMovements(string settingsInputPath)
+    {
+        var lines = File.ReadLines(settingsInputPath);
+        int lineNum = 0;
+        foreach (string line in lines)
+        {
+            lineNum++;
+
+            if (string.IsNullOrWhiteSpace(line))
+                continue;
+
+            int num;
+            try
+            {
+                if (line.Length == 1)
+                    throw new InvalidOperationException("The line is only a single character");
+
+                var numPart = line[1..];
+                var numAbs = int.Parse(numPart);
+                if (numAbs == 0)
+                    throw new InvalidOperationException("The number cannot be zero");
+
+                num = line[0] switch
+                {
+                    'R' => numAbs,
+                    'L' => -1 * numAbs,
+                    _ => throw new InvalidOperationException("Unexpected leading character"),
+                };
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"An error occurred on line {lineNum}. The syntax of the line should be '^[LR]\\d+$' (and the int cannot evaluate to 0). The line is: '{line}'", e);
+            }
+
+            yield return num;
         }
     }
 
-    public CircularCounter(int upperInclusive, int initial = 0)
+    public enum Mode
     {
-        _upperInclusive = upperInclusive;
-        Counter = initial;
+        /// <summary>
+        /// This is challenge 1 and the answer is 1135.
+        /// </summary>
+        CountZerosAfterMovement,
+
+        /// <summary>
+        /// This is challenge 2 and the answer is 6558.
+        /// </summary>
+        CountZerosWheneverEncountered,
     }
 
-    public void Increment(int n)
+    public sealed class Settings
     {
-        var newCounter = Counter + n;
-        while (newCounter > _upperInclusive)
-        {
-            newCounter--;
-            newCounter -= _upperInclusive;
-        }
+        [Required] public string InputPath { get; set; } = "Day1/input.txt";
 
-        while (newCounter < 0)
-        {
-            newCounter++;
-            newCounter += _upperInclusive;
-        }
-
-        Counter = newCounter;
+        public Mode Mode { get; set; } = Mode.CountZerosAfterMovement;
     }
 }
