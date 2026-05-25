@@ -18,7 +18,6 @@ public class MissingPassword
 
         int zeros = 0;
 
-        // BUG: failing to reproduce old functionality w/ new code
         foreach (int movement in movements)
         {
             var increment = movement > 0 ? 1 : -1;
