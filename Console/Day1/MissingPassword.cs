@@ -5,6 +5,8 @@ using System.IO;
 
 namespace AdventOfCode2025.Day1;
 
+// TODO: could move on or write unit tests for this class
+
 public class MissingPassword
 {
     public int Challenge(Settings? settings = null)
