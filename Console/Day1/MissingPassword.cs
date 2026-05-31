@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 
 namespace AdventOfCode2025.Day1;
 
@@ -23,7 +20,6 @@ public class MissingPassword
             var increment = movement > 0 ? 1 : -1;
             for (int i = 0; i < Math.Abs(movement); i++)
             {
-                // TODO: didn't decrement on movement=-11
                 counter.Increment(increment);
                 if (counter.Counter == 0 && settings.Mode is Mode.CountZerosWheneverEncountered)
                     zeros++;

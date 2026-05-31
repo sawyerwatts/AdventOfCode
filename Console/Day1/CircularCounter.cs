@@ -1,5 +1,3 @@
-using System;
-
 namespace AdventOfCode2025.Day1;
 
 /// <summary>
