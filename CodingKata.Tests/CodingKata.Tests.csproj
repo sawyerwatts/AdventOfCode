@@ -18,4 +18,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CodingKata.Console\CodingKata.Console.csproj" />
+  </ItemGroup>
+
 </Project>
