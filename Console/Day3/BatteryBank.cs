@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 namespace AdventOfCode2025.Day3;
 
 public class BatteryBank
@@ -83,7 +81,7 @@ public class BatteryBank
         throw new NotImplementedException();
     }
 
-    public int MaxJoltageBroken(int numBatteriesToEnable)
+    public int MaxJoltageFailed(int numBatteriesToEnable)
     {
         if (Batteries.Count < numBatteriesToEnable)
             throw new ArgumentException($"Cannot enable {numBatteriesToEnable} batteries, there are only {Batteries.Count} in the bank");
