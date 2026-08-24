@@ -42,6 +42,9 @@ dotnet_diagnostic.CA1310.severity = none
 # like it when InvariantGlobalization>false</InvariantGlobalization> is set in the csproj).
 dotnet_diagnostic.CA1311.severity = none
 
+# CA1707
+dotnet_diagnostic.CA1707.severity = none
+
 # CA1724: Type names should not match namespaces
 dotnet_diagnostic.CA1724.severity = none
 
